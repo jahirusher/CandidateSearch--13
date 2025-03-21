@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
 import { Candidate } from '../interfaces/Candidate.interface';
+import { IoAddCircle, IoRemoveCircle } from 'react-icons/io5';
+
+
 
 const CandidateSearch = () => {
   const [candidate, setCandidate] = useState<Candidate | null>(null);
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [, setCandidates] = useState<Candidate[]>([]);
   const [message, setMessage] = useState<string>(''); 
 
 
@@ -64,8 +67,9 @@ const CandidateSearch = () => {
             View Profile
           </a>
           <div>
-            <button onClick={saveCandidate}>+</button>
-            <button onClick={showNextCandidate}>-</button>
+
+           <IoAddCircle style={{ fontSize: '50px', cursor: 'pointer', color: 'rgb(0, 255, 123)'}} onClick={() => setCandidates([])} />
+             <IoRemoveCircle  style={{ fontSize: '50px', cursor: 'pointer', color: 'rgb(255, 0, 0)'}} onClick={() => setCandidate(null)} />
           </div>
         </div>
       ) : (
