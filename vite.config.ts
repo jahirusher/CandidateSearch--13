@@ -14,8 +14,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: Number(process.env.PORT) || 3000,
+    allowedHosts: ['candidatesearch-13.onrender.com'], 
   },
   preview: {
-    allowedHosts: ['candidate-search-app-rc2q.onrender.com'],
+    allowedHosts: ['candidatesearch-13.onrender.com'],
   },
 });
