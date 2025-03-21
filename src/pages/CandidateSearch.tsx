@@ -3,13 +3,10 @@ import { searchGithub } from '../api/API';
 import { Candidate } from '../interfaces/Candidate.interface';
 import { IoAddCircle, IoRemoveCircle } from 'react-icons/io5';
 
-
-
 const CandidateSearch = () => {
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [candidate, setCandidate] = useState<Candidate | null>(null);
-  const [, setCandidates] = useState<Candidate[]>([]);
   const [message, setMessage] = useState<string>(''); 
-
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -29,27 +26,25 @@ const CandidateSearch = () => {
     fetchCandidates();
   }, []);
 
-
   const saveCandidate = () => {
     if (candidate) {
       const savedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
       savedCandidates.push(candidate); 
       localStorage.setItem('savedCandidates', JSON.stringify(savedCandidates));
+      showNextCandidate();
     }
-    showNextCandidate();
   };
 
   const showNextCandidate = () => {
-    setCandidates((prev) => {
-      const updatedCandidates = prev.slice(1); 
-      if (updatedCandidates.length > 0) {
-        setCandidate(updatedCandidates[0]); 
-      } else {
-        setCandidate(null);
-        setMessage('No more candidates available');
-      }
-      return updatedCandidates;
-    });
+    const updatedCandidates = candidates.slice(1); 
+    setCandidates(updatedCandidates);
+
+    if (updatedCandidates.length > 0) {
+      setCandidate(updatedCandidates[0]); 
+    } else {
+      setCandidate(null);
+      setMessage('No more candidates available');
+    }
   };
 
   return (
@@ -67,9 +62,14 @@ const CandidateSearch = () => {
             View Profile
           </a>
           <div>
-
-           <IoAddCircle style={{ fontSize: '50px', cursor: 'pointer', color: 'rgb(0, 255, 123)'}} onClick={() => setCandidates([])} />
-             <IoRemoveCircle  style={{ fontSize: '50px', cursor: 'pointer', color: 'rgb(255, 0, 0)'}} onClick={() => setCandidate(null)} />
+            <IoAddCircle 
+              style={{ fontSize: '50px', cursor: 'pointer', color: 'rgb(0, 255, 123)'}} 
+              onClick={saveCandidate} 
+            />
+            <IoRemoveCircle  
+              style={{ fontSize: '50px', cursor: 'pointer', color: 'rgb(255, 0, 0)'}} 
+              onClick={showNextCandidate} 
+            />
           </div>
         </div>
       ) : (
